@@ -66,7 +66,7 @@ public class ViolationServiceImpl implements ViolationService {
     @Override
     public Violation createViolationFromEvent(Event event) {
         Violation violation = new Violation();
-        violation.setEventId(event.getId());
+        violation.setEvent(event);
         violation.setFine(getFine(event));
         return violation;
     }

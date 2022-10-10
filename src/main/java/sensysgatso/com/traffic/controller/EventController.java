@@ -9,7 +9,7 @@ import sensysgatso.com.traffic.service.EventService;
 import java.util.List;
 
 @RestController
-@RequestMapping("event")
+@RequestMapping("v1/event")
 @RequiredArgsConstructor
 public class EventController {
 

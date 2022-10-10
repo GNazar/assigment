@@ -14,8 +14,10 @@ public class Violation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(columnDefinition = "uuid")
     private UUID id;
-    @Column(columnDefinition = "uuid")
-    private UUID eventId;
+
+    @ManyToOne
+    @JoinColumn(name = "eventId")
+    private Event event;
     private boolean paid;
     private BigDecimal fine;
 

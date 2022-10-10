@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("violation")
+@RequestMapping("v1/violation")
 @RequiredArgsConstructor
 public class ViolationController {
 

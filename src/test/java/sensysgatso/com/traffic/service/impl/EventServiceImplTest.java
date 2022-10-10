@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sensysgatso.com.traffic.dto.EventDto;
 import sensysgatso.com.traffic.dto.EventType;
-import sensysgatso.com.traffic.dto.ViolationDto;
 import sensysgatso.com.traffic.entity.Event;
 import sensysgatso.com.traffic.entity.Violation;
 import sensysgatso.com.traffic.repository.EventRepository;
@@ -19,12 +18,12 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static sensysgatso.com.traffic.EventTestDataFactory.createEvent;
 import static sensysgatso.com.traffic.EventTestDataFactory.createEventDto;
 import static sensysgatso.com.traffic.ViolationTestDataFactory.createViolation;
-import static sensysgatso.com.traffic.ViolationTestDataFactory.createViolationDto;
 
 @ExtendWith(MockitoExtension.class)
 class EventServiceImplTest {
@@ -47,21 +46,18 @@ class EventServiceImplTest {
         EventDto eventDto = createEventDto(type, eventId);
         Event event = createEvent(type, eventId);
         Violation violation = createViolation(eventId);
-        ViolationDto violationDto = createViolationDto(eventId);
 
         when(eventMapper.asEvent(eventDto)).thenReturn(event);
         when(eventRepository.save(event)).thenReturn(event);
         when(violationService.createViolationFromEvent(event)).thenReturn(violation);
         when(violationService.save(violation)).thenReturn(violation);
-        when(violationMapper.asViolationDto(violation)).thenReturn(violationDto);
 
         eventService.processEvent(eventDto);
 
         verify(eventMapper).asEvent(eventDto);
-        verify(eventRepository).save(event);
+        verify(eventRepository, times(2)).save(event);
         verify(violationService).createViolationFromEvent(event);
         verify(violationService).save(violation);
-        verify(violationMapper).asViolationDto(violation);
     }
 
     @Test
@@ -77,7 +73,7 @@ class EventServiceImplTest {
         eventService.processEvent(eventDto);
 
         verify(eventMapper).asEvent(eventDto);
-        verify(eventRepository).save(event);
+        verify(eventRepository, times(2)).save(event);
         verify(violationService, never()).createViolationFromEvent(any());
         verify(violationService, never()).save(any());
         verify(violationMapper, never()).asViolationDto(any());

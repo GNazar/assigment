@@ -1,5 +1,6 @@
 package sensysgatso.com.traffic.service;
 
+import org.springframework.data.domain.Pageable;
 import sensysgatso.com.traffic.dto.SummaryDto;
 import sensysgatso.com.traffic.dto.ViolationDto;
 import sensysgatso.com.traffic.entity.Event;
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 public interface ViolationService {
 
-    List<ViolationDto> getViolations();
+    List<ViolationDto> getViolations(Pageable pageable);
 
     Violation createViolationFromEvent(Event event);
 

@@ -46,7 +46,6 @@ class EventServiceImplTest {
         EventDto eventDto = createEventDto(type, eventId);
         Event event = createEvent(type, eventId);
         Violation violation = createViolation(eventId);
-
         when(eventMapper.asEvent(eventDto)).thenReturn(event);
         when(eventRepository.save(event)).thenReturn(event);
         when(violationService.createViolationFromEvent(event)).thenReturn(violation);
@@ -66,7 +65,6 @@ class EventServiceImplTest {
         UUID eventId = UUID.randomUUID();
         EventDto eventDto = createEventDto(type, eventId);
         Event event = createEvent(type, eventId);
-
         when(eventMapper.asEvent(eventDto)).thenReturn(event);
         when(eventRepository.save(event)).thenReturn(event);
 

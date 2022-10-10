@@ -1,6 +1,7 @@
 package sensysgatso.com.traffic.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sensysgatso.com.traffic.dto.SummaryDto;
 import sensysgatso.com.traffic.dto.ViolationDto;
@@ -27,8 +28,8 @@ public class ViolationServiceImpl implements ViolationService {
     private final ViolationMapper violationMapper;
 
     @Override
-    public List<ViolationDto> getViolations() {
-        return violationRepository.findAll()
+    public List<ViolationDto> getViolations(Pageable pageable) {
+        return violationRepository.findAll(pageable)
                 .stream()
                 .map(violationMapper::asViolationDto)
                 .collect(Collectors.toList());

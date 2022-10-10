@@ -6,13 +6,14 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import sensysgatso.com.traffic.dto.EventType;
 import sensysgatso.com.traffic.dto.SummaryDto;
 import sensysgatso.com.traffic.dto.ViolationDto;
 import sensysgatso.com.traffic.entity.Event;
 import sensysgatso.com.traffic.entity.Violation;
 import sensysgatso.com.traffic.repository.ViolationRepository;
-import sensysgatso.com.traffic.service.exception.ViolationNotFound;
 import sensysgatso.com.traffic.service.mapper.ViolationMapper;
 
 import java.math.BigDecimal;
@@ -45,11 +46,13 @@ class ViolationServiceImplTest {
     void getViolations_shouldReturn() {
         UUID eventId = UUID.randomUUID();
         Violation violation1 = createViolation(eventId);
-
-        when(violationRepository.findAll()).thenReturn(List.of(violation1));
+        Pageable pageable = Pageable.ofSize(20);
+        PageImpl<Violation> page = new PageImpl<>(List.of(violation1));
+        when(violationRepository.findAll(pageable)).thenReturn(page);
         when(violationMapper.asViolationDto(any())).thenReturn(createViolationDto(eventId));
 
-        List<ViolationDto> violations = violationService.getViolations();
+        List<ViolationDto> violations = violationService.getViolations(pageable);
+
         assertEquals(1, violations.size());
     }
 
@@ -100,6 +103,7 @@ class ViolationServiceImplTest {
         Event event = createEvent(EventType.SPEED, id);
 
         Violation violation = violationService.createViolationFromEvent(event);
+
         assertEquals(id, event.getId());
         assertEquals(BigDecimal.valueOf(50), violation.getFine());
         assertFalse(violation.isPaid());
@@ -112,6 +116,4 @@ class ViolationServiceImplTest {
 
         assertThrows(IllegalArgumentException.class, () -> violationService.createViolationFromEvent(event));
     }
-
-
 }

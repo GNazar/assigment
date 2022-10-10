@@ -21,6 +21,7 @@ public class EventController {
         eventService.processEvent(eventDto);
     }
 
+    //todo: for test, delete
     @GetMapping
     public List<EventDto> getEvents() {
         return eventService.getEvents();

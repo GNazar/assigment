@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import sensysgatso.com.traffic.dto.EventDto;
 import sensysgatso.com.traffic.service.EventService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,7 +18,7 @@ public class EventController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void createEvent(@RequestBody EventDto eventDto) {
+    public void createEvent(@Valid @RequestBody EventDto eventDto) {
         eventService.processEvent(eventDto);
     }
 

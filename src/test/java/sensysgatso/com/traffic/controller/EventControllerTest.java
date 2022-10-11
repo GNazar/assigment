@@ -48,4 +48,25 @@ class EventControllerTest {
                 .andExpect(content().string(emptyString()));
     }
 
+    @Test
+    void createEvent_should_return400_when_LicensePlateEmpty() throws Exception {
+        String createEventReq = "{" +
+                "    \"id\": \"d9bb7458-d5d9-4de7-87f7-7f39edd51d15\"," +
+                "    \"eventDate\": \"2022-02-09T00:25:20.529\"," +
+                "    \"eventType\": \"RED_LIGHT\"," +
+                "    \"speed\": \"90.0\"," +
+                "    \"limit\": \"50.0\"," +
+                "    \"unity\": \"km/h\"," +
+                "    \"processed\": \"false\"" +
+                "}";
+        String url = "/v1/event";
+
+        mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createEventReq))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(emptyString()));
+    }
+
 }
